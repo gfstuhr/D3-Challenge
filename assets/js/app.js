@@ -35,12 +35,12 @@ d3.csv("assets/data/data.csv").then(function(data){
     });
 
     var xLinearScale = d3.scaleLinear()
-        .domain([d3.min(data, d => d.poverty)-1,d3.max(data, d => d.poverty)])
+        .domain([d3.min(data, d => d.poverty-1),d3.max(data, d => d.poverty)+1])
         .range([0,chartWidth]);
 
     var yLinearScale = d3.scaleLinear()
-        .domain([d3.min(data, d => d.healthcareLow)-1, d3.max(data, d => d.healthcareLow)])
-        .range([chartHeight, 0]);
+        .domain([d3.min(data, d => d.healthcareLow)-1, d3.max(data, d => d.healthcareLow)+1])
+        .range([chartHeight, 0])
     
     var x_axis = d3.axisBottom(xLinearScale);
     var y_axis = d3.axisLeft(yLinearScale).ticks(10);
