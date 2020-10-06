@@ -46,13 +46,12 @@ d3.csv("assets/data/data.csv").then(function(data){
     var y_axis = d3.axisLeft(yLinearScale).ticks(10);
 
     chartGroup.append("g")
-        .call(y_axis);
+        .call(y_axis)
     
     chartGroup.append("g")
         .attr("transform", `translate(0, ${chartHeight} )`)
         .call(x_axis);
 
-    
     chartGroup.selectAll("dot")
         .data(data)
         .enter()
@@ -60,7 +59,33 @@ d3.csv("assets/data/data.csv").then(function(data){
             .attr("r",10)
             .attr("cx", d=> xLinearScale(d.poverty))
             .attr("cy", d=> yLinearScale(d.healthcareLow))
-            .classed("stateCircle",true);
+            .classed("stateCircle",true)
+        
+    chartGroup.selectAll("dot")
+        .data(data)
+        .enter()
+        .append("text")
+            .attr("x", d=>xLinearScale(d.poverty))
+            .attr("y", d=>yLinearScale(d.healthcareLow))
+            .text(d => d.abbr)
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "10px")
+            .attr("text-anchor", "middle")
+            .attr("fill", "white");
+    
+    // // Create axes labels
+    // chartGroup.append("text")
+    //     .attr("transform", "rotate(-90)")
+    //     .attr("y", 0 - margin.left + 40)
+    //     .attr("x", 0 - (height / 2))
+    //     .attr("dy", "1em")
+    //     .attr("class", "axisText")
+    //     .text("Lacks Healthcare (%)");
+    
+    // chartGroup.append("text")
+    //     .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
+    //     .attr("class", "axisText")
+    //     .text("In Poverty (%)");
 
 }).catch(function(error){
     console.log(error);
