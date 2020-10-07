@@ -6,10 +6,10 @@ var svgHeight = 660;
 
 // Define the chart's margins as an object
 var chartMargin = {
-  top: 30,
+  top: 50,
   right: 30,
-  bottom: 30,
-  left: 30
+  bottom: 50,
+  left: 50
 };
 
 // Define dimensions of the chart area
@@ -58,6 +58,16 @@ var chartGroup = svg.append("g")
         .attr("transform", `translate(0, ${chartHeight} )`)
         .call(x_axis);
 
+        // Tooltip
+    var toolTip=d3.tip()
+        .attr("class", "tootip")
+        .offset([0,10])
+        .html(function(d){
+            return(d.state)
+        });
+    
+    chartGroup.call(toolTip)
+
     // Plotting data
     chartGroup.selectAll("dot")
         .data(data)
@@ -67,22 +77,33 @@ var chartGroup = svg.append("g")
             .attr("cx", d=> xLinearScale(d.poverty))
             .attr("cy", d=> yLinearScale(d.healthcareLow))
             .classed("stateCircle",true)
+            .on("mouseover", function(data){
+                toolTip.show(data, this);
+            }).on("mouseout", function(data, index){
+                toolTip.hide(data);
+            });
+        
     //Adding Plot Text 
     chartGroup.selectAll("dot")
         .data(data)
         .enter()
         .append("text")
             .attr("x", d=>xLinearScale(d.poverty))
-            .attr("y", d=>yLinearScale(d.healthcareLow))
+            .attr("y", d=>yLinearScale(d.healthcareLow)+ 1)
             .text(d => d.abbr)
             .attr("font-size", "10px")
             .attr("text-anchor", "middle")
-            .attr("fill", "white");
+            .attr("fill", "white")
+            .on("mouseover", function(data){
+                toolTip.show(data, this);
+            }).on("mouseout", function(data, index){
+                toolTip.hide(data);
+            });
     
     // Create axes labels
 
     var x_labels = chartGroup.append("g")
-        .attr("transform", `translate(${chartWidth / 2}, ${chartHeight + chartMargin.top })`)
+        .attr("transform", `translate(${chartWidth / 2}, ${chartHeight + chartMargin.top-20 })`)
 
     var povertylabel = x_labels.append("text")
         .attr("x", 0)
@@ -96,7 +117,7 @@ var chartGroup = svg.append("g")
         
     var healthcare_label=y_labels.append("text")
         .attr("x", 0 - (chartHeight/2))
-        .attr("y", chartMargin.left - 5 )
+        .attr("y", 15 - chartMargin.left)
         .attr("value", "healthcare") 
         .classed("active", true)
         .text("Lacks Healthcare (%)");
