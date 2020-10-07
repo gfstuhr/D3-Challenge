@@ -60,10 +60,11 @@ var chartGroup = svg.append("g")
 
         // Tooltip
     var toolTip=d3.tip()
-        .attr("class", "tootip")
+        .attr("class", "d3-tip")
         .offset([0,10])
         .html(function(d){
-            return(d.state)
+
+            return(`State: ${d.state}<br>Poverty Rate: ${d.poverty}%<br>Lacks Healthcare Rate ${d.healthcareLow}%`)
         });
     
     chartGroup.call(toolTip)
@@ -82,7 +83,7 @@ var chartGroup = svg.append("g")
             }).on("mouseout", function(data, index){
                 toolTip.hide(data);
             });
-        
+      
     //Adding Plot Text 
     chartGroup.selectAll("dot")
         .data(data)
