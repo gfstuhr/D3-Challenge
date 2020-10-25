@@ -1,2 +1,2 @@
 # D3-Challenge
- D3 Homework
+The D3 challenge used D3 to create a simple scatter plot from a CSV file.
